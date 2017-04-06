@@ -4,4 +4,4 @@
 
 **https://marcossilvano.github.io/apps/**
 
-- Some demos are made with PhaserJS framework and others the Unity3D engine.
+- Some games are made with PhaserJS framework and others use the Unity3D engine.
