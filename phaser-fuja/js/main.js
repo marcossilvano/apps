@@ -93,6 +93,9 @@ function create() {
 	
 	textTime = game.add.text(gameWidth - 150, 30, 'TEMPO: 0', {font: "bold 16px Arial", fill: "white"});
 	textTime.setShadow(0, 0, 'rgba(0,0,0,1)', 4);
+
+	let fullScreenButton = game.input.keyboard.addKey(Phaser.Keyboard.ONE);
+	fullScreenButton.onDown.add(toogleFullScreen, this)	
 	
 	// agenda primeira bola para X segundos
 	game.time.events.add(Phaser.Timer.SECOND * ballLaunchDelay, launchBall, this);
@@ -100,6 +103,16 @@ function create() {
 	// agenda primeiro ponto para 1 segundo
 	game.time.events.add(Phaser.Timer.SECOND * 1, addScore, this);
 }
+
+function toogleFullScreen() {
+	game.scale.fullScreenScaleMode = Phaser.ScaleManager.EXACT_FIT;
+	if (game.scale.isFullScreen) {
+		game.scale.stopFullScreen();
+	} else {
+		game.scale.startFullScreen(false);
+	}
+}
+
 
 // Update
 function update() {
@@ -195,8 +208,9 @@ function launchBall() {
 // Render some debug text on screen
 function render() {
 	game.debug.text('FUJA PHAZER DEMO', 10, 30);
-	game.debug.text(' Use as [SETAS] para mover o personagem', 10, 55);
-	game.debug.text(' Pressione [ESPAÇO] para reiniciar', 10, 80);
+	game.debug.text(' [SETAS] movimentos', 10, 55);
+	game.debug.text(' [1] fullscreen', 10, 80);
+	game.debug.text(' [ESPAÇO] reiniciar', 10, 105);
 	
 	//game.debug.bodyInfo(player, 32, 32);
     /*

@@ -129,7 +129,7 @@ class PlayState extends Phaser.State {
 
         // hud
         this.textUI = this.game.add.text(16, 16, '', { fontSize: "12px", fill: '#ffffff' });
-        this.textUI.text = "Coins: 0";
+        this.textUI.text = "Press [1] to fullscreen";
         this.textUI.fixedToCamera = true;
 
         this.game.time.advancedTiming = true; // ativa game.time.fps

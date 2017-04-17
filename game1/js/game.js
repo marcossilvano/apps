@@ -76,7 +76,7 @@ class PlayState extends Phaser.State {
 
         // hud
         let text = this.game.add.text(16, 16, '', { fontSize: "12px", fill: '#ffffff' });
-        text.text = "Platformer Demo";
+        text.text = "Press [1] to fullscreen";
         text.fixedToCamera = true;
 
         this.game.time.advancedTiming = true; // ativa game.time.fps
