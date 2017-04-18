@@ -27,11 +27,14 @@ class Player extends Phaser.Sprite {
     update() {
         this.body.velocity.x = 0;
 
-        if (this.keys.left.isDown)
+        if (this.keys.left.isDown || this.keys.vKeys.left)
             this.body.velocity.x = -150;
         else 
-        if (this.keys.right.isDown)
+        if (this.keys.right.isDown || this.keys.vKeys.right)
             this.body.velocity.x = 150;
+
+        if (this.keys.vKeys.up)
+            this.jump()
 
         this.animate()
     }

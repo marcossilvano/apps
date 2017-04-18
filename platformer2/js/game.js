@@ -33,6 +33,7 @@ class Game extends Phaser.Game {
 class PlayState extends Phaser.State {
     
     preload() {
+        this.game.renderer.renderSession.roundPixels = true;
         let dir = Config.ASSETS
         
         // map
@@ -53,7 +54,12 @@ class PlayState extends Phaser.State {
         this.game.load.image('background-sky',`${dir}background4.png`);
         //this.game.load.image('background-rocks',`${dir}rocks1.jpg`);
 
-        this.game.load.spritesheet('coin', `${dir}/coin.png`, 32, 32);
+        this.game.load.spritesheet('coin', `${dir}coin.png`, 32, 32);
+
+		// virtual joystick
+		this.game.load.image('arrow-left', `${dir}button_left.png`);
+		this.game.load.image('arrow-right', `${dir}button_right.png`);
+		this.game.load.image('arrow-up', `${dir}button_up.png`);
     }
 
     resetLevel() {
@@ -107,6 +113,34 @@ class PlayState extends Phaser.State {
         this.game.add.existing(this.bg)
     }
 
+    createVirtualJoystick(keys) {
+        this.vKeys = {
+            left: false,
+            right:false,
+            up: false
+        }
+        this.keys.vKeys = this.vKeys // coloca no keys para acesso pelo player
+
+        let ypos = this.game.height - 80
+		this.addVirtualButton(14, ypos, 'arrow-left', () => this.vKeys.left=true, () => this.vKeys.left = false)
+		this.addVirtualButton(91, ypos, 'arrow-right', () => this.vKeys.right=true, () => this.vKeys.right = false)
+		this.addVirtualButton(this.game.width-80,ypos, 'arrow-up', () => this.vKeys.up = true, () => this.vKeys.up = false)
+    }
+    
+    addVirtualButton(x, y, resource, pressHandler, releaseHandler) {
+		let button = this.game.add.button(x, y, resource, null, this, 0,1,0,1);
+		button.scale.setTo(1.5,1.5);
+//		button.inputEnabled = true;
+		button.fixedToCamera = true;
+
+        button.events.onInputOver.add(pressHandler);
+        button.events.onInputDown.add(pressHandler);
+        button.events.onInputOut.add(releaseHandler);
+        button.events.onInputUp.add(releaseHandler);
+
+		return button;
+    }
+
     create() {
         this.game.physics.startSystem(Phaser.Physics.ARCADE);
         this.game.stage.backgroundColor = '#000000';
@@ -121,6 +155,7 @@ class PlayState extends Phaser.State {
         this.createCoins()
         this.createEnemies()
         this.createPlayer()
+        this.createVirtualJoystick(this.keys)
 
         this.game.physics.arcade.gravity.y = 550;
 
@@ -129,7 +164,7 @@ class PlayState extends Phaser.State {
 
         // hud
         this.textUI = this.game.add.text(16, 16, '', { fontSize: "12px", fill: '#ffffff' });
-        this.textUI.text = "Press [1] to fullscreen";
+        this.textUI.text = "Coins: 0";
         this.textUI.fixedToCamera = true;
 
         this.game.time.advancedTiming = true; // ativa game.time.fps
