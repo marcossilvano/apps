@@ -114,17 +114,17 @@ class PlayState extends Phaser.State {
     }
 
     createVirtualJoystick(keys) {
-        this.vKeys = {
-            left: false,
-            right:false,
-            up: false
-        }
-        this.keys.vKeys = this.vKeys // coloca no keys para acesso pelo player
-
+        // modifica estado de keys diretamente
         let ypos = this.game.height - 80
-		this.addVirtualButton(14, ypos, 'arrow-left', () => this.vKeys.left=true, () => this.vKeys.left = false)
-		this.addVirtualButton(91, ypos, 'arrow-right', () => this.vKeys.right=true, () => this.vKeys.right = false)
-		this.addVirtualButton(this.game.width-80,ypos, 'arrow-up', () => this.vKeys.up = true, () => this.vKeys.up = false)
+		this.addVirtualButton(14, ypos, 'arrow-left', 
+                              () => this.keys.left.isDown = true, 
+                              () => this.keys.left.isDown = false)
+		this.addVirtualButton(91, ypos, 'arrow-right',
+                              () => this.keys.right.isDown = true, 
+                              () => this.keys.right.isDown = false)
+		this.addVirtualButton(this.game.width-80,ypos, 'arrow-up', 
+                              () => this.keys.down.isDown = true, 
+                              () => this.keys.down.isDown = false)
     }
     
     addVirtualButton(x, y, resource, pressHandler, releaseHandler) {
@@ -164,7 +164,7 @@ class PlayState extends Phaser.State {
 
         // hud
         this.textUI = this.game.add.text(16, 16, '', { fontSize: "12px", fill: '#ffffff' });
-        this.textUI.text = "Coins: 0";
+        this.textUI.text = "Platformer Demo\n[1] fullscreen\n[cima] pulo duplo fixo\n[baixo]pulo variavel";
         this.textUI.fixedToCamera = true;
 
         this.game.time.advancedTiming = true; // ativa game.time.fps

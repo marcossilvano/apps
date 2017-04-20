@@ -20,22 +20,22 @@ class Player extends Phaser.Sprite {
         jumpButton = this.game.input.keyboard.addKey(Phaser.Keyboard.UP);
         jumpButton.onDown.add(this.jump, this)
 
-        this.doubleJump = false
         this.autoCull = true
+        
+        this.doubleJump = false
+        this.jumpTime = 0
    }
 
     update() {
         this.body.velocity.x = 0;
 
-        if (this.keys.left.isDown || this.keys.vKeys.left)
+        if (this.keys.left.isDown)
             this.body.velocity.x = -150;
         else 
-        if (this.keys.right.isDown || this.keys.vKeys.right)
+        if (this.keys.right.isDown)
             this.body.velocity.x = 150;
 
-        if (this.keys.vKeys.up)
-            this.jump()
-
+        this.jumpVariable()
         this.animate()
     }
 
@@ -62,17 +62,46 @@ class Player extends Phaser.Sprite {
             this.scale.x = -1
     }
 
+    jumpSingle() {
+        //if (this.body.onFloor()) {
+        //if (this.body.touching.down) { // soh ocorre se deixar entrar no objeto
+        if (this.body.blocked.down) {
+            this.body.velocity.y = -350;
+        }    
+    }  
+
+    // double jump
     jump() {
         //if (this.body.onFloor()) {
         //if (this.body.touching.down) { // soh ocorre se deixar entrar no objeto
         if (this.body.blocked.down || !this.doubleJump) {
-            this.body.velocity.y = -250;//-250;
+            this.body.velocity.y = -250
             
             if (!this.body.blocked.down)
                 this.doubleJump = true
             else
                 this.doubleJump = false
         }    
-    }    
+    }  
+
+    jumpVariable() {
+        if (this.keys.down.isDown) {
+            // se esta no chao, entao pode pular
+            if (this.body.onFloor()) {
+                this.jumpTime = 0 
+            }
+
+            // sobe durante X quadros
+            if (this.jumpTime < 20) { 
+                this.body.velocity.y = -200
+                this.jumpTime++ // consome tempo de pulo
+            }
+        } else {
+            // coloca um valor bem maior para estourar tempo de pulo
+            // impede pulo recorrente no ar quando tempo ainda nao acabou
+            this.jumpTime = 999 
+        }       
+    }
+  
 }
 
