@@ -164,7 +164,7 @@ class PlayState extends Phaser.State {
 
         // hud
         this.textUI = this.game.add.text(16, 16, '', { fontSize: "12px", fill: '#ffffff' });
-        this.textUI.text = "Platformer Demo\n[1] fullscreen\n[cima] pulo duplo fixo\n[baixo]pulo variavel";
+        this.textUI.text = "Platformer Demo\n[1] fullscreen\n[cima] pulo duplo fixo\n[baixo] pulo variavel";
         this.textUI.fixedToCamera = true;
 
         this.game.time.advancedTiming = true; // ativa game.time.fps
