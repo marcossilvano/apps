@@ -15,6 +15,8 @@ Config.DEBUG = false
 Config.ANTIALIAS = false
 Config.ASSETS = 'assets/'
 
+
+
 // Jogo
 class Game extends Phaser.Game {
     constructor () {        
@@ -26,6 +28,8 @@ class Game extends Phaser.Game {
 //      this.state.add('Splash', SplashState, false)
 //      this.state.add('GameOver', GameOverState, false)
         this.state.start('Play')
+
+        $('#button-fullscreen').click(fullScreen)
     }
 }
 
@@ -229,7 +233,17 @@ class PlayState extends Phaser.State {
 }// class PlayState
 
 
-window.onload = function() {
+//window.onload = function() {
     // funciona como singleton
     const GAME = new Game()
+//}
+
+
+function fullScreen() {
+    GAME.scale.fullScreenScaleMode = Phaser.ScaleManager.EXACT_FIT;
+    if (GAME.scale.isFullScreen) {
+        GAME.scale.stopFullScreen();
+    } else {
+        GAME.scale.startFullScreen(false);
+    }
 }
