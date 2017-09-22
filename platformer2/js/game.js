@@ -21,7 +21,7 @@ Config.ASSETS = 'assets/'
 class Game extends Phaser.Game {
     constructor () {        
         // Game(width, height, renderer, parent, state, transparent, antialias, physicsConfig)
-        super(Config.WIDTH, Config.HEIGHT, Phaser.CANVAS, 'game-container', null, false, Config.ANTIALIAS)
+        super(Config.WIDTH, Config.HEIGHT, Phaser.WEBGL, 'game-container', null, false, Config.ANTIALIAS)
 
         // adiciona estados ao jogo
         this.state.add('Play', PlayState, false)
