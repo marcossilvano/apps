@@ -37,6 +37,9 @@ class Game extends Phaser.Game {
 class PlayState extends Phaser.State {
     
     preload() {
+        this.game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;    
+        this.game.scale.refresh();        
+
         this.game.renderer.renderSession.roundPixels = true;
         let dir = Config.ASSETS
         
