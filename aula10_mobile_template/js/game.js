@@ -1,6 +1,7 @@
 'use strict'
 
 // APP DO JOGO ///////////////////////////////////////////////////////////////////
+let GAME = null
 
 class Game extends Phaser.Game {
     constructor () {        
@@ -11,13 +12,18 @@ class Game extends Phaser.Game {
         this.state.add('Play', PlayState, false)
         //this.state.add('Title', TitleState, false)
         this.state.start('Play')
+        GAME = this
+    }
+
+    hello() {
+        window.alert('hello')
     }
 }
 
 // CLASSE GENERICA DE TELAS //////////////////////////////////////////////////////
 
 class GameState extends Phaser.State {
-    create() {
+    initFullScreenButtons() {
         this.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
         
         let fullScreenButton = this.input.keyboard.addKey(Phaser.Keyboard.ONE);
@@ -42,9 +48,17 @@ class GameState extends Phaser.State {
     }
 }
 
-// cria jogo
+function fullScreen() {
+    GAME.scale.fullScreenScaleMode = Phaser.ScaleManager.EXACT_FIT;
+    if (GAME.scale.isFullScreen) {
+        GAME.scale.stopFullScreen();
+    } else {
+        GAME.scale.startFullScreen(false);
+    }
+}
 
+// cria jogo
 window.onload = function() {
     // funciona como singleton
-    const GAME = new Game()
+    GAME = new Game()
 }
