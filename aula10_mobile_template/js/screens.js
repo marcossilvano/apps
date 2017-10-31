@@ -37,7 +37,7 @@ class PlayState extends GameState {
         this.text2 = this.createHealthText(this.game.width*8/9, 50, 'PLAYER B: 5')
 
         // adicionar controles de full screen a tela
-        super.create()
+        super.initFullScreenButtons()
     }
 
     createExplosion(x, y) {
