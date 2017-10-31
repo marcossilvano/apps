@@ -37,9 +37,6 @@ class Game extends Phaser.Game {
 class PlayState extends Phaser.State {
     
     preload() {
-        this.game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;    
-        this.game.scale.refresh();        
-
         this.game.renderer.renderSession.roundPixels = true;
         let dir = Config.ASSETS
         
@@ -66,7 +63,9 @@ class PlayState extends Phaser.State {
 		// virtual joystick
 		this.game.load.image('arrow-left', `${dir}button_left.png`);
 		this.game.load.image('arrow-right', `${dir}button_right.png`);
-		this.game.load.image('arrow-up', `${dir}button_up.png`);
+        this.game.load.image('arrow-up', `${dir}button_up.png`);
+        
+        this.game.load.image('fullscreen-button', `${dir}fullscreen-button.png`)
     }
 
     resetLevel() {
@@ -179,6 +178,14 @@ class PlayState extends Phaser.State {
         if (Config.DEBUG) {
             this.mapLayer.debug = true;
         }
+
+        // full screen touch button
+        let fullScreenIcon = game.add.sprite(game.width - 10, game.height - 10, 
+            'fullscreen-button')
+        fullScreenIcon.anchor.setTo(1, 1)
+        fullScreenIcon.scale.setTo(0.75, 0.75)
+        fullScreenIcon.inputEnabled = true
+        fullScreenIcon.events.onInputDown.add(this.toggleFullScreen, this)    
 
         //Global.playState = this
         this.resetLevel()
