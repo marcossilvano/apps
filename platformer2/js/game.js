@@ -180,12 +180,12 @@ class PlayState extends Phaser.State {
         }
 
         // full screen touch button
-        let fullScreenIcon = game.add.sprite(game.width - 10, game.height - 10, 
+        let fullScreenIcon = this.game.add.sprite(Config.WIDTH/2, Config.HEIGHT - 10, 
             'fullscreen-button')
-        fullScreenIcon.anchor.setTo(1, 1)
+        fullScreenIcon.anchor.setTo(0.5, 1)
         fullScreenIcon.scale.setTo(0.75, 0.75)
         fullScreenIcon.inputEnabled = true
-        fullScreenIcon.events.onInputDown.add(this.toggleFullScreen, this)    
+        fullScreenIcon.events.onInputDown.add(this.toogleFullScreen, this)    
 
         //Global.playState = this
         this.resetLevel()
