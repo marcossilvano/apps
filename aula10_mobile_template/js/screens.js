@@ -11,22 +11,31 @@ class PlayState extends GameState {
     }
 
     create() {
+        //this.game.world.resize(128*32, this.game.height)
+        this.game.world.setBounds(0, 0, 128*32, this.game.height);
+
         this.game.renderer.roundPixels = true
         //game.renderer.clearBeforeRender = false
         this.game.physics.startSystem(Phaser.Physics.ARCADE)
         
+        this.game.camera.speedX = 10
+
         let background = this.game.add.tileSprite(0, 0, this.game.width, this.game.height, 'background')
         background.autoScroll(-30, 0)
+        background.fixedToCamera = true
 
         // players
         this.player1 = new Player(this.game, this.game.width*1/5, this.game.height/2, 'player', 0xff0000)
+        this.player1.fixedToCamera = true
         this.player2 = new Player(this.game, this.game.width*4/5, this.game.height/2, 'player', 0x00ff00)
+        this.player2.fixedToCamera = true
         this.player2.angle = 180
         this.game.add.existing(this.player1)
         this.game.add.existing(this.player2)
 
         // exemplo de NPC simples com tweening
         this.saw = new Saw(this.game, 100, 100, 'saw')
+        this.saw.fixedToCamera = true
         this.game.add.existing(this.saw)
 
         // mapa com paredes
@@ -34,7 +43,9 @@ class PlayState extends GameState {
 
         // HUD
         this.text1 = this.createHealthText(this.game.width*1/9, 50, 'PLAYER A: 5')
+        this.text1.fixedToCamera = true
         this.text2 = this.createHealthText(this.game.width*8/9, 50, 'PLAYER B: 5')
+        this.text2.fixedToCamera = true
 
         // adicionar controles de full screen a tela
         super.initFullScreenButtons()
@@ -59,25 +70,25 @@ class PlayState extends GameState {
     }
 
     createMap() {
-        let mapData = [ "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX",
-                        "X                              X",
-                        "X                              X",
-                        "X                              X",
-                        "X                              X",
-                        "X                              X",
-                        "X          XXXXXXXXXXX         X",
-                        "X          X         X         X",
-                        "X                              X",
-                        "X                              X",
-                        "X                              X",
-                        "X                              X",
-                        "X          X         X         X",
-                        "X          XXXXXXXXXXX         X",
-                        "X                              X",
-                        "X                              X",
-                        "X                              X",
-                        "X                              X",
-                        "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"]
+        let mapData = [ "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX",
+                        "X                                                                                                                              X",
+                        "X                                                                                                                              X",
+                        "X                                                                                                                              X",
+                        "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX",
+                        "X                                                                                                                              X",
+                        "X                                                                                                                              X",
+                        "X                                                                                                                              X",
+                        "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX",
+                        "X                                                                                                                              X",
+                        "X                                                                                                                              X",
+                        "X                                                                                                                              X",
+                        "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX",
+                        "X                                                                                                                              X",
+                        "X                                                                                                                              X",
+                        "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX",
+                        "X                                                                                                                              X",
+                        "X                                                                                                                              X",
+                        "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"]
                         
         this.map = this.game.add.group()
         for (let row = 0; row < mapData.length; row++) {
@@ -98,6 +109,12 @@ class PlayState extends GameState {
     update() { 
         // colisoes
         // this.game.physics.arcade.collide(player1, bullets2, hitPlayer)
+        this.game.camera.x += this.game.camera.speedX
+        
+        if (this.game.camera.x <= 0 || this.game.camera.x >= this.game.world.width - this.game.width) {
+            this.game.camera.speedX *= -1
+        }
+        console.log(this.game.camera.x)
     }
 
     updateHud() {
