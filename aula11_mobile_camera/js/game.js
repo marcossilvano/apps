@@ -31,7 +31,8 @@ class GameState extends Phaser.State {
         fullScreenIcon.anchor.setTo(1, 1)
         fullScreenIcon.scale.setTo(0.75, 0.75)
         fullScreenIcon.inputEnabled = true
-        fullScreenIcon.events.onInputDown.add(this.toggleFullScreen, this)            
+        fullScreenIcon.events.onInputDown.add(this.toggleFullScreen, this)        
+        fullScreenIcon.fixedToCamera = true
     }
 
     toggleFullScreen() {
