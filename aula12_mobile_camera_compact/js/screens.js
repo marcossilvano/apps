@@ -1,5 +1,6 @@
 
 class PlayState extends GameState {
+
     preload() {
         this.game.load.image('wall', 'assets/wall.png')
         this.game.load.image('player', 'assets/airplane1.png')
@@ -73,25 +74,25 @@ class PlayState extends GameState {
     }
 
     createMap() {
-        let mapData = [ "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX",
-                        "X                                                                                                                              X",
-                        "X                                                                                                                              X",
-                        "X                                                                                                                              X",
-                        "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX",
-                        "X                                                                                                                              X",
-                        "X                                                                                                                              X",
-                        "X                                                                                                                              X",
-                        "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX",
-                        "X                                                                                                                              X",
-                        "X                                                                                                                              X",
-                        "X                                                                                                                              X",
-                        "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX",
-                        "X                                                                                                                              X",
-                        "X                                                                                                                              X",
-                        "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX",
-                        "X                                                                                                                              X",
-                        "X                                                                                                                              X",
-                        "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"]
+        let mapData = [ "  X                     X                   X             X                        X                   X             X          ",
+                        "                                                                                                                                ",
+                        "             X                   X             X                        X                   X             X                  X  ",
+                        "                                                                                                                                ",
+                        "   X                    X                   X             X                        X                   X             X          ",
+                        "                                                                                                                                ",
+                        "             X                   X             X                        X                   X             X                  X  ",
+                        "                                                                                                                                ",
+                        "    X                   X                   X             X                        X                   X             X          ",
+                        "                                                                                                                                ",
+                        "             X                   X             X                        X                   X             X                  X  ",
+                        "                                                                                                                                ",
+                        "     X                  X                   X             X                        X                   X             X          ",
+                        "                                                                                                                                ",
+                        "             X                   X             X                        X                   X             X                  X  ",
+                        "                                                                                                                                ",
+                        "      X                 X                   X             X                        X                   X             X          ",
+                        "                                                                                                                                ",
+                        "             X                   X             X                        X                   X             X                  X  "]
                         
         this.map = this.game.add.group()
         for (let row = 0; row < mapData.length; row++) {
@@ -103,6 +104,7 @@ class PlayState extends GameState {
                     block.body.immovable = true
                     block.tag = 'wall'
                     block.autoCull = true
+                    block.scale.setTo(1.3, 1.3)
                     block.inputEnabled = true
                     block.input.enableDrag(false, true)        
                 }
