@@ -45,17 +45,6 @@ class PlayState extends GameState {
         // mapa com paredes
         this.createMap()
 
-        //this.bmp = this.game.make.bitmapData(this.game.world.width, this.game.world.height);
-        //this.bmp.draw('map', 0, 0);
-        //this.bmp.update();
-        //this.bmp.addToWorld()
-/*
-        this.bmp.addToWorld(0, 0, 0, 0,
-            this.game.world.width/this.bmp.width,
-            this.game.world.height/this.bmp.height);
-*/               
-//        this.game.input.addMoveCallback(this.clickColor, this);
-
         // HUD
         this.text1 = this.createHealthText(this.game.width*1/9, 50, 'PLAYER A: 5')
         this.text1.fixedToCamera = true
@@ -69,15 +58,6 @@ class PlayState extends GameState {
         super.initFullScreenButtons()
     }
     
-    clickColor (pointer, x, y) {
-/*
-        // if (x >= 0 && x <= this.bmp.width && y >= 0 && y <= this.bmp.height) {
-            var color = this.bmp.getPixel(x, y);
-            this.text1.text = `color: ${color.r}, ${color.g}, ${color.b}`
-        //}
- */
-    }
-
     createExplosion(x, y) {
         let explosion = game.add.sprite(x, y, 'explosion')
         let anim = explosion.animations.add('full', [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15] , 60, false)
@@ -122,10 +102,15 @@ class PlayState extends GameState {
             for (let col = 0; col < mapData[0].length; col++) {
                 if (mapData[row][col] == 'X') {
                     //let block = this.map.create(col*32, row*32, 'wall')
-                    let block = this.game.add.tileSprite(col*32, row*32, 128, 128, 'wall')
+                    //let block = this.game.add.tileSprite(col*32, row*32, 128, 128, 'wall')
+                    let block = this.game.add.tileSprite(col*32, row*32, 64, 64, 'wall')
+                    block.width = 128
+                    block.height= 128
                     this.map.add(block)
-                    block.scale.setTo(0.5, 0.5)
+                    //block.scale.setTo(2, 2)
                     this.game.physics.arcade.enable(block)
+                    //block.body.scale.setTo(2,2)
+                    block.body.syncBounds = true
                     block.body.immovable = true
                     block.tag = 'wall'
                     block.autoCull = true
@@ -140,6 +125,7 @@ class PlayState extends GameState {
     update() { 
         // colisoes
         // this.game.physics.arcade.collide(player1, bullets2, hitPlayer)
+        this.game.physics.arcade.overlap(this.player1, this.map, this.hit)
 
         // move camera
         //this.game.camera.x += this.game.camera.speedX
@@ -148,14 +134,19 @@ class PlayState extends GameState {
         //}
 
         // move camera pelo mouse
-        if (this.game.input.mousePointer.isDown) {
-            if (this.game.input.x < this.game.width/2)
+        if (this.game.input.mousePointer.isDown || this.game.input.pointer1.isDown) {
+            let x = this.game.input.mousePointer.x + this.game.input.pointer1.x
+            if (x < this.game.width/2)
                 this.game.camera.x -= this.game.camera.speedX
             else
-            if (this.game.input.x >= this.game.width/2)
+            if (x >= this.game.width/2)
                 this.game.camera.x += this.game.camera.speedX
         }
     
+    }
+
+    hit(player, block) {
+        console.log("hit block " + block)
     }
 
     updateHud() {
@@ -164,7 +155,13 @@ class PlayState extends GameState {
     }
 
     render() {
-    //    game.debug.body(npc)
+        this.game.debug.body(this.player1)
+        this.map.forEach(function(item) {
+            this.game.debug.body(item)
+        }, this);       
+        
+        this.game.debug.pointer(this.game.input.mousePointer);
+        this.game.debug.pointer(this.game.input.pointer1);        
     //    game.debug.body(player1)
     //    game.debug.body(player2)
     }
