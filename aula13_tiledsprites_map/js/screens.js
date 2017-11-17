@@ -9,28 +9,29 @@ class PlayState extends GameState {
         this.game.load.image('saw', 'assets/saw.png')
         this.game.load.spritesheet('explosion', 'assets/explosion.png', 56, 56)
         this.game.load.image('fullscreen-button', 'assets/fullscreen-button.png')
-        this.game.load.image('map', 'assets/map-bitmap.png')
+        
+        this.game.load.tilemap('level1', 'assets/mapa.json', null, Phaser.Tilemap.TILED_JSON)
     }
 
     create() {
-        //this.game.world.resize(128*32, this.game.height)
-        this.game.world.setBounds(0, 0, 128*32, this.game.height);
-        console.log(this.game.world.width)
-        console.log(this.game.world.height)
-
         this.game.renderer.roundPixels = true
         //game.renderer.clearBeforeRender = false
         this.game.physics.startSystem(Phaser.Physics.ARCADE)
         
         this.game.camera.speedX = 10
 
+        // fundo
         let background = this.game.add.tileSprite(0, 0, this.game.width, this.game.height, 'background')
         background.autoScroll(-30, 0)
         background.fixedToCamera = true
 
+        // mapa com paredes
+        this.createMap()        
+
         // players
         this.player1 = new Player(this.game, this.game.width*1/5, this.game.height/2, 'player', 0xff0000)
         this.player1.fixedToCamera = true
+        this.player1.collided = false
         this.player2 = new Player(this.game, this.game.width*4/5, this.game.height/2, 'player', 0x00ff00)
         this.player2.fixedToCamera = true
         this.player2.angle = 180
@@ -41,9 +42,6 @@ class PlayState extends GameState {
         this.saw = new Saw(this.game, 100, 100, 'saw')
         this.saw.fixedToCamera = true
         this.game.add.existing(this.saw)
-
-        // mapa com paredes
-        this.createMap()
 
         // HUD
         this.text1 = this.createHealthText(this.game.width*1/9, 50, 'PLAYER A: 5')
@@ -77,6 +75,14 @@ class PlayState extends GameState {
     }
 
     createMap() {
+        let mapTmx = this.game.add.tilemap('level1');
+        this.game.world.setBounds(0, 0, mapTmx.widthInPixels, mapTmx.heightInPixels);
+
+        this.map = this.game.add.group()   
+        mapTmx.createFromObjects('Object Layer 1', 1, 'wall', 0, true, false, this.map, Block);
+    }
+
+    createMap_old() {
         let mapData = [ "  X                     X                     X                     X                     X                     X               ",
                         "                                                                                                                                ",
                         "                                                                                                                                ",
@@ -101,15 +107,11 @@ class PlayState extends GameState {
         for (let row = 0; row < mapData.length; row++) {
             for (let col = 0; col < mapData[0].length; col++) {
                 if (mapData[row][col] == 'X') {
-                    //let block = this.map.create(col*32, row*32, 'wall')
-                    //let block = this.game.add.tileSprite(col*32, row*32, 128, 128, 'wall')
-                    let block = this.game.add.tileSprite(col*32, row*32, 64, 64, 'wall')
+                    let block = this.game.add.tileSprite(col*32, row*32, 32, 32, 'wall')
                     block.width = 128
                     block.height= 128
                     this.map.add(block)
-                    //block.scale.setTo(2, 2)
                     this.game.physics.arcade.enable(block)
-                    //block.body.scale.setTo(2,2)
                     block.body.syncBounds = true
                     block.body.immovable = true
                     block.tag = 'wall'
@@ -125,15 +127,10 @@ class PlayState extends GameState {
     update() { 
         // colisoes
         // this.game.physics.arcade.collide(player1, bullets2, hitPlayer)
-        this.game.physics.arcade.overlap(this.player1, this.map, this.hit)
+        this.player1.collided = false
+        this.game.physics.arcade.overlap(this.player1, this.map, this.hitPlayer)
 
-        // move camera
-        //this.game.camera.x += this.game.camera.speedX
-        //if (this.game.camera.x <= 0 || this.game.camera.x >= this.game.world.width - this.game.width) {
-        //    this.game.camera.speedX *= -1
-        //}
-
-        // move camera pelo mouse
+        // move camera pelo mouse (clique nas metades da tela)
         if (this.game.input.mousePointer.isDown || this.game.input.pointer1.isDown) {
             let x = this.game.input.mousePointer.x + this.game.input.pointer1.x
             if (x < this.game.width/2)
@@ -145,8 +142,8 @@ class PlayState extends GameState {
     
     }
 
-    hit(player, block) {
-        console.log("hit block " + block)
+    hitPlayer(player, block) {
+        player.collided = true
     }
 
     updateHud() {
@@ -155,10 +152,13 @@ class PlayState extends GameState {
     }
 
     render() {
-        this.game.debug.body(this.player1)
-        this.map.forEach(function(item) {
-            this.game.debug.body(item)
-        }, this);       
+        if (this.player1.collided)
+            this.game.debug.body(this.player1, 'rgba(255,0,0,0.4')
+        else
+            this.game.debug.body(this.player1)
+        //this.map.forEach(function(item) {
+        //    this.game.debug.body(item)
+        //}, this);       
         
         this.game.debug.pointer(this.game.input.mousePointer);
         this.game.debug.pointer(this.game.input.pointer1);        
