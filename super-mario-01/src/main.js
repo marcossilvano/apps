@@ -6,8 +6,8 @@ import TitleScene from './TitleScene';
 */
 
 let config = {
-    //type: Phaser.WEBGL,
-    type: Phaser.CANVAS,
+    type: Phaser.WEBGL,
+    //type: Phaser.CANVAS,
     parent: 'content',
     width: 400,
     height: 240,
