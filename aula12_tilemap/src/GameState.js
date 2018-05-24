@@ -24,7 +24,7 @@ class GameState extends BaseState {
         this.createTileMap()
         this.createExplosions()
 
-        this.player1 = new Player(this.game, this.game.width * 2 / 9, this.game.height / 2,
+        this.player1 = new Player(this.game, 100, 100,
             'plane1', 0xff0000, this.createBullets(), {
                 left: Phaser.Keyboard.LEFT,
                 right: Phaser.Keyboard.RIGHT,
@@ -63,7 +63,7 @@ class GameState extends BaseState {
         this.map.addTilesetImage('tiles1');
 
         this.mapLayer = this.map.createLayer('Tile Layer 1');
-//        this.map.setCollisionBetween(1, 11, true, 'Tile Layer 1')
+        this.map.setCollisionBetween(1, 11, true, 'Tile Layer 1')
 //        map.setCollisionByExclusion([4,8,10,2]);
     
 //        this.trapsLayer = this.map.createLayer('Traps Layer 1');
@@ -160,11 +160,8 @@ class GameState extends BaseState {
         this.updateBullets(this.player1.bullets)
 
         // colisoes com mapa
-/*        this.game.physics.arcade.collide(this.player1, this.map)
-        this.game.physics.arcade.collide(this.player2, this.map)
-        this.game.physics.arcade.collide(this.player1.bullets, this.map, this.killBullet, null, this)
-        this.game.physics.arcade.collide(this.player2.bullets, this.map, this.killBullet, null, this)
-*/
+        this.game.physics.arcade.collide(this.player1, this.mapLayer);
+
         // colisao com serras
         this.game.physics.arcade.collide(this.player1, this.obstacles, this.hitObstacle, null, this)
     }

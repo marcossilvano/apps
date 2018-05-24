@@ -10,7 +10,7 @@ class Player extends Phaser.Sprite {
         this.body.maxVelocity.set(config.PLAYER_MAX_VELOCITY)
         this.body.mass = 0.1
         this.body.friction.setTo(0,0)
-        this.body.bounce.setTo(1,1)
+        //this.body.bounce.setTo(1,1)
         this.body.setSize(32, 32, 16, 16)
         this.body.isCircle = true
         this.nextFire = 0
@@ -45,8 +45,11 @@ class Player extends Phaser.Sprite {
 
     // move e rotaciona, como em Asteroids
     moveAndTurn() {
-        //  only move when you click
-        if (this.game.input.mousePointer.isDown) {
+        //  mouse ou touch
+        if (this.game.input.mousePointer.isDown || this.game.input.pointer1.isDown) {
+            let x = this.game.input.mousePointer.x + this.game.input.pointer1.x
+            let y = this.game.input.mousePointer.y + this.game.input.pointer1.y
+
             if (!Phaser.Rectangle.contains(this.body, this.game.input.x, this.game.input.y)) {
                 this.game.physics.arcade.moveToPointer(this, config.PLAYER_MAX_VELOCITY);
             }
