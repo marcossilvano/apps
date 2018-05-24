@@ -15,6 +15,7 @@ class Player extends Phaser.Sprite {
         this.body.isCircle = true
         this.nextFire = 0
         this.body.collideWorldBounds = true
+        this.body.allowRotation = false
     
         this.cursors = {
             left: game.input.keyboard.addKey(keys.left),
@@ -51,10 +52,12 @@ class Player extends Phaser.Sprite {
             let y = this.game.input.mousePointer.y + this.game.input.pointer1.y
 
             if (!Phaser.Rectangle.contains(this.body, this.game.input.x, this.game.input.y)) {
-                this.game.physics.arcade.moveToPointer(this, config.PLAYER_MAX_VELOCITY);
+                //this.game.physics.arcade.moveToPointer(this, config.PLAYER_MAX_VELOCITY);
+                this.rotation = this.game.physics.arcade.moveToPointer(this, 60, 
+                    this.game.input.activePointer, config.PLAYER_MAX_VELOCITY);
             }
         }
-        this.angleByAtan()
+        //this.angleByAtan()
     }   
     
     fireBullet() {

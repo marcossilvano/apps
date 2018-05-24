@@ -68,35 +68,11 @@ class GameState extends BaseState {
     
 //        this.trapsLayer = this.map.createLayer('Traps Layer 1');
 //        this.map.setCollision([29], true, 'Traps Layer 1')
-                
+        
+        this.obstacles = this.game.add.group()   
+        this.map.createFromObjects('Object Layer 1', 45, 'saw', 0, true, true, this.obstacles, Saw)
+
         this.mapLayer.resizeWorld(); // redefine tamanho do mapa para adequar ao mapa
-    }
-
-    createMap() {
-        // carrega mapa de arquivo texto
-        let mapData = this.loadFile()
-
-        this.map = this.game.add.group()
-        for (let row = 0; row < mapData.length; row++) {
-            for (let col = 0; col < mapData[row].length; col++) {
-                // tipo
-                let tag = mapData[row][col]
-                // parametro
-                let param = ''
-                if (col + 1 < mapData[row].length)
-                    param = mapData[row][col + 1]
-
-                if (tag == 'X') {
-                    let wall = this.map.create(col * 32, row * 32, 'wall')
-                    this.game.physics.arcade.enable(wall)
-                    wall.body.immovable = true
-                    wall.tag = 'wall'
-                } else
-                    if (tag == 'S') {
-                        this.createSaw(col * 32, row * 32, param)
-                    }
-            }
-        }
     }
 
     spawnSaw(x, y, type) {
@@ -163,7 +139,7 @@ class GameState extends BaseState {
         this.game.physics.arcade.collide(this.player1, this.mapLayer);
 
         // colisao com serras
-        this.game.physics.arcade.collide(this.player1, this.obstacles, this.hitObstacle, null, this)
+        //this.game.physics.arcade.collide(this.player1, this.obstacles, this.hitObstacle, null, this)
     }
 
     killBullet(bullet, wall) {
