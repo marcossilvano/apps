@@ -1,9 +1,9 @@
 'use strict'
 
 class BaseState extends Phaser.State {
-    
+  
     initFullScreenButtons() {
-        this.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
+        //this.scale.scaleMode = Phaser.ScaleManager.RESIZE;
         
         let fullScreenButton = this.input.keyboard.addKey(Phaser.Keyboard.ONE);
         fullScreenButton.onDown.add(this.toggleFullScreen, this)    
@@ -17,7 +17,7 @@ class BaseState extends Phaser.State {
         fullScreenIcon.events.onInputDown.add(this.toggleFullScreen, this)        
         fullScreenIcon.fixedToCamera = true
 */
-    }
+    } 
 
     createText(x, y, string, size=16) {
         let style = { font: `bold ${size}px Arial`, fill: 'white' }
