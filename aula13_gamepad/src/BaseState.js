@@ -5,9 +5,15 @@ class BaseState extends Phaser.State {
     initFullScreenButtons() {
         //this.scale.scaleMode = Phaser.ScaleManager.RESIZE;
 
-/*
+        // tecla de fullscreen (PC)
         let fullScreenButton = this.input.keyboard.addKey(Phaser.Keyboard.ONE);
         fullScreenButton.onDown.add(this.toggleFullScreen, this)    
+
+        //this.input.gamepad.start()
+        // botao de fullscreen (PC e Xbox)
+        this.game.input.gamepad.onUpCallback = this.buttonFullScreen
+        this.game.input.gamepad.callbackContext = this
+/*
         // full screen touch button
         let fullScreenIcon = this.game.add.sprite(this.game.width - 10, this.game.height - 10, 
             'fullscreen-button')
@@ -28,6 +34,13 @@ class BaseState extends Phaser.State {
         text.anchor.setTo(0.5, 0.5)
         text.fixedToCamera = true
         return text
+    }
+
+    buttonFullScreen(context) {
+        if (this.game.input.gamepad.pad1.connected && 
+            this.game.input.gamepad.pad1.justPressed(Phaser.Gamepad.XBOX360_Y)) {
+            this.toggleFullScreen()
+        }        
     }
 
     toggleFullScreen() {
