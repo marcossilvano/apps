@@ -11,7 +11,8 @@ class BootState extends Phaser.State {
         this.game.load.image('saw', 'assets/saw.png')
         this.game.load.image('smoke', 'assets/smoke.png')
         this.game.load.image('title', 'assets/title.png')
-
+        this.game.load.image('fullscreen-button', 'assets/fullscreen-button.png')
+        
         this.game.load.text('map1', 'assets/map1.txt');  // arquivo txt do mapa
 
         this.game.load.spritesheet('explosion', 'assets/explosion.png', 56, 56)

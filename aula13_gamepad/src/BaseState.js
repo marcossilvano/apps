@@ -13,16 +13,16 @@ class BaseState extends Phaser.State {
         // botao de fullscreen (PC e Xbox)
         this.game.input.gamepad.onUpCallback = this.buttonFullScreen
         this.game.input.gamepad.callbackContext = this
-/*
+
         // full screen touch button
         let fullScreenIcon = this.game.add.sprite(this.game.width - 10, this.game.height - 10, 
             'fullscreen-button')
         fullScreenIcon.anchor.setTo(1, 1)
-        fullScreenIcon.scale.setTo(0.75, 0.75)
+        fullScreenIcon.scale.setTo(0.4, 0.4)
         fullScreenIcon.inputEnabled = true
         fullScreenIcon.events.onInputDown.add(this.toggleFullScreen, this)        
         fullScreenIcon.fixedToCamera = true
-*/
+
     } 
 
     createText(x, y, string, size=16) {
